@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+        {% block page_content %}
+            <article class="media content-section">
+                {% if number_items %}
+                  <a href="{{url_for('new_item',category_id=category_id)}}">Add Item</a>
+                  <h2 class="latest_news_title">Latest News
+                  ({{number_items}} items)
+                  <h2>
+                    {% else %}
+                  <a href="{{url_for('new_category')}}">Add Category</a>
+                  <h2 class="category_title">Categories</h2>
+                  {% endif %}
+                    {% for category in categories %}
+                      <div class="col-sm-6">
+                        {% if number_items %}
+                        <a class="article-title" href="{{url_for('item', item_id=category.id)}}">{{category.title}}</a>
+                        {% else %}
+                        <a class="article-title" href="{{url_for('category', category_id=category.id)}}">{{category.name}}</a>
+                        {% endif %}
+                        <br>
+                        <div>
+                          <img onerror="errorLoadingImage(this)" class="myImg card-img-top" src="/static/{{category.file_name}}" >
+                            {% if current_user.is_authenticated %}
+                              <span class="fa fa-star menu_label
+                              " id="{{category.id}}/{{current_user.id}}" style="font-size: 50px;
+                              {% if category.faved_user == current_user.id  %}   color: orange {% else %} color:black; {% endif %}"></span>
+                            {% endif %}
+                            </div>
+                    </div>
+                    {% endfor %}
+        </article>
+        {% endblock %}
